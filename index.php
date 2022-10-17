@@ -37,7 +37,7 @@
                     <td><?php echo $row['email'] ?></td>
                     <td><?php echo $row['password'] ?></td>
                     <td><?php echo $row['created_at'] ?></td>
-                    <td><button class='btn btn-warning'>Edit</button>&nbsp;<button class='btn btn-danger delete' data-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                    <td><a href="./edit.php?id=<?php echo $row['id']; ?>" class='btn btn-warning'>Edit</a>&nbsp;<button class='btn btn-danger delete' data-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
                     <!-- Dusra Tareeqa Delete ka! Sasta Tareeqa -->
                     <a href="./delete_data.php?id=<?php echo $row['id'] ?>" class="btn btn-secondary">DeleteNew</a>
                     </td>
