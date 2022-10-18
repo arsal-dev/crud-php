@@ -11,6 +11,5 @@
 
         $conn->query("UPDATE `users` SET `name`='$name',`email`='$email',`password`='$password' WHERE id = $id");
 
-
         header('Location: ./index.php');
     }
