@@ -2,7 +2,7 @@
 
 <div class="container mt-5">
 <div class="alert alert-success alert-dismissible fade show d-none" id="alert" role="alert">
-  <strong>Success!</strong> User Deleted successfully
+  <strong>Success!</strong> <span id="msg">User Deleted successfully</span>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
     <table class="table">
@@ -18,6 +18,25 @@
         </thead>
         <tbody id="tbody"></tbody>
     </table>
+
+    <!-- creating a form -->
+    <div class="container">
+        <form id="form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control">
+            </div>
+            <button class="btn btn-primary mt-3">Submit</button>
+        </form>
+    </div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -38,12 +57,10 @@
   </div>
 </div>
 
-
 <script>
     let tbody = document.getElementById('tbody');
     window.addEventListener('load', function(){
         showData();
-        tbody.innerHTML = '';
     });
 
 
@@ -53,11 +70,13 @@
         res = await res.text();
         res = JSON.parse(res).data;
         console.log(res);
-
-
+        
+        tbody.innerHTML = '';
+        let num = 0;
         for(let i = 0; i < res.length; i++){
+            num++;
             tbody.innerHTML += `<tr>
-                <th scope="row">${res[i].id}</th>
+                <th scope="row">${num}</th>
                 <td>${res[i].name}</td>
                 <td>${res[i].email}</td>
                 <td>${res[i].password}</td>
@@ -66,7 +85,7 @@
             </tr>`;
         }
 
-        delteData()
+        delteData();
     }
 
     function delteData(){
@@ -91,10 +110,35 @@
     
             if(res.code == 200){
                 document.getElementById('alert').classList.remove('d-none');
-                tbody.innerHTML = '';
                 showData();
             }
         });
     }
+
+    let form = document.getElementById('form');
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        let name = document.getElementById('name').value;
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+
+        let obj = { name, email, password };
+
+        let response = await fetch('./add_data.php', {
+            method: 'POST',
+            body: JSON.stringify(obj)
+        });
+
+        response = await response.text();
+        response = JSON.parse(response);
+        console.log(response);
+
+        if(response.code == 200){
+            document.getElementById('alert').classList.remove('d-none');
+            document.getElementById('msg').innerHTML = response.res;
+            showData();
+        }
+    });
+
 </script>
 <?php include './includes/footer.php'; ?>
