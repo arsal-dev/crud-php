@@ -21,6 +21,7 @@
 
     <!-- creating a form -->
     <div class="container">
+        <p class="text-danger" id="error"></p>
         <form id="form">
             <div class="form-group">
                 <label for="name">Name</label>
@@ -57,6 +58,40 @@
   </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="edit_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit_form">
+            <div class="form-group">
+                <label for="edit_name">Name</label>
+                <input type="text" id="edit_name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="edit_email">Email</label>
+                <input type="text" id="edit_email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="edit_password">Password</label>
+                <input type="text" id="edit_password" class="form-control">
+            </div>
+            <input type="submit" value="update" class="btn btn-primary mt-3" data-bs-dismiss="modal">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
     let tbody = document.getElementById('tbody');
     window.addEventListener('load', function(){
@@ -81,11 +116,12 @@
                 <td>${res[i].email}</td>
                 <td>${res[i].password}</td>
                 <td>${res[i].created_at}</td>
-                <td><button class="btn btn-warning">Edit</button>&nbsp;<button class="btn btn-danger dlt" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="${res[i].id}">Delete</button></td>
+                <td><button class="btn btn-warning edit" data-id="${res[i].id}" data-bs-toggle="modal" data-bs-target="#edit_modal">Edit</button>&nbsp;<button class="btn btn-danger dlt" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="${res[i].id}">Delete</button></td>
             </tr>`;
         }
 
         delteData();
+        editData();
     }
 
     function delteData(){
@@ -114,31 +150,94 @@
             }
         });
     }
-
+    
     let form = document.getElementById('form');
     form.addEventListener('submit', async function(e){
         e.preventDefault();
         let name = document.getElementById('name').value;
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
+        let error = document.getElementById('error');
 
-        let obj = { name, email, password };
-
-        let response = await fetch('./add_data.php', {
-            method: 'POST',
-            body: JSON.stringify(obj)
-        });
-
-        response = await response.text();
-        response = JSON.parse(response);
-        console.log(response);
-
-        if(response.code == 200){
-            document.getElementById('alert').classList.remove('d-none');
-            document.getElementById('msg').innerHTML = response.res;
-            showData();
+        if(name.length == 0){
+            error.innerHTML = 'Please Enter Name';
         }
+        else if(email.length == 0){
+            error.innerHTML = 'Please Enter Email';
+        }
+        else if(password.length == 0){
+            error.innerHTML = 'Please Enter Password';
+        }
+        else {
+            error.innerHTML = '';
+
+            let obj = { name, email, password };
+    
+            let response = await fetch('./add_data.php', {
+                method: 'POST',
+                body: JSON.stringify(obj)
+            });
+    
+            response = await response.text();
+            response = JSON.parse(response);
+            console.log(response);
+    
+            if(response.code == 200){
+                document.getElementById('alert').classList.remove('d-none');
+                document.getElementById('msg').innerHTML = response.res;
+                showData();
+            }
+        }
+
     });
+
+    function editData(){
+        let edit = document.querySelectorAll('.edit');
+        let edit_id;
+        for(let i of edit){
+            i.addEventListener('click', async function(){
+                edit_id = this.getAttribute('data-id');
+
+                let response = await fetch('get_single_data.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ edit_id })
+                });
+
+                response = await response.text();
+                res = JSON.parse(response).data;
+
+                document.getElementById('edit_name').value = res.name;
+                document.getElementById('edit_email').value = res.email;
+                document.getElementById('edit_password').value = res.password;
+            });
+        }
+
+
+        let edit_form = document.getElementById('edit_form');
+        edit_form.addEventListener('submit', async function(e){
+            e.preventDefault();
+
+            let edit_name = document.getElementById('edit_name').value;
+            let edit_email = document.getElementById('edit_email').value;
+            let edit_password = document.getElementById('edit_password').value;
+
+            let obj = { edit_name, edit_email, edit_password, edit_id };
+
+            let response = await fetch('./update_data.php', {
+                method: 'POST',
+                body: JSON.stringify(obj)
+            });
+
+            response = await response.text();
+            response = JSON.parse(response);
+
+            if(response.code == 200){
+                document.getElementById('alert').classList.remove('d-none');
+                document.getElementById('msg').innerHTML = response.res;
+                showData();
+            }
+        });
+    }
 
 </script>
 <?php include './includes/footer.php'; ?>
