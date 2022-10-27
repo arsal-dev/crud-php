@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2022 at 09:15 AM
+-- Generation Time: Oct 27, 2022 at 09:08 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -39,17 +39,14 @@ CREATE TABLE `todos` (
 --
 
 INSERT INTO `todos` (`id`, `user_id`, `todo`, `created_at`) VALUES
-(1, 1, 'test', '2022-10-26 06:58:14'),
-(2, 1, 'test2', '2022-10-26 06:58:41'),
-(3, 1, 'checking', '2022-10-26 07:08:04'),
-(4, 1, 'hello', '2022-10-26 07:08:07'),
-(5, 1, 'testing123', '2022-10-26 07:08:14'),
-(6, 2, 'test', '2022-10-26 07:08:52'),
-(7, 2, 'asdfasdf', '2022-10-26 07:08:54'),
-(8, 2, 'test2', '2022-10-26 07:08:56'),
-(9, 2, 'checking', '2022-10-26 07:08:58'),
-(10, 1, 'sdfgsdfkjghdfk', '2022-10-26 07:11:32'),
-(11, 1, 'dfklsgjd', '2022-10-26 07:11:33');
+(94, 1, 'easertg', '2022-10-27 06:23:42'),
+(96, 1, 'asdas', '2022-10-27 06:26:13'),
+(98, 1, 'aert', '2022-10-27 06:26:14'),
+(100, 1, '6as', '2022-10-27 06:26:17'),
+(105, 2, 'test', '2022-10-27 06:36:37'),
+(107, 2, 'test2', '2022-10-27 06:36:37'),
+(108, 2, 'test3', '2022-10-27 06:36:38'),
+(109, 2, 'sahi ho giya', '2022-10-27 06:36:38');
 
 -- --------------------------------------------------------
 
@@ -97,7 +94,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `todos`
 --
 ALTER TABLE `todos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `user`

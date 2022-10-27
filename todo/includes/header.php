@@ -21,18 +21,29 @@
       .todos {
         padding: 0;
       }
-      .todos > li {
-        list-style: none;
+      .todos > div {
+        display: flex;
+        justify-content: space-between;
         border: 1px solid grey;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .todos > div > div > button {
+        width: 100px;
+        margin: 5px;
+      }
+      .todos > div > li  {
+        list-style: none;
         padding: 10px;
         margin: 5px;
         border-radius: 5px;
+        width: 400px;
       }
-      .todos > li:hover {
+      /* .todos > div > li:hover {
         background-color: #ececec;
         cursor: pointer;
         text-decoration: line-through;
-      }
+      } */
     </style>
 </head>
 <body>
