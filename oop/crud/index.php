@@ -7,7 +7,8 @@
 
     // $database->deleteData('users', 'where id = 3');
 
-    $data = $database->getData('users');
+    // $data = $database->deleteData('users', 'where id = 1');
     
+    $data = $database->getData('users');
     echo '<pre>';
     print_r($data);
