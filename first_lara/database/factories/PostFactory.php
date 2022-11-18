@@ -14,7 +14,7 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->text($maxNbChars = 6),
+            'title' => $this->faker->unique()->text($maxNbChars = 6),
             'discription' => $this->faker->text($maxNbChars = 100),
             'body' => $this->faker->text($maxNbChars = 300),
         ];

@@ -23,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 // update -- update edited data
 
 
-Route::resource('/', BlogController::class);
+Route::resource('/posts', BlogController::class);
 
 // Route::get('/', [BlogController::class, 'index']);
+// Route::get('/create', [BlogController::class, 'create']);
 // Route::get('/posts/create', [BlogController::class, 'create']);
 // Route::post('/posts/create', [BlogController::class, 'store']);
 

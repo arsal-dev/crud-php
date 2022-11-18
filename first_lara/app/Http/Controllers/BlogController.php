@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 // php artisan
 // php artisan make:controller [name] --resource
@@ -16,7 +18,12 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        // $posts = DB::select("SELECT * FROM posts WHERE id = :id", [":id" => 1]);
+        // $posts = DB::table('posts')
+        //     ->get();
+
+        $posts = Post::all();
+        return view('welcome', ['posts' => $posts]);
     }
 
     /**
@@ -48,7 +55,8 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('post', ['post' => $post]);
     }
 
     /**
