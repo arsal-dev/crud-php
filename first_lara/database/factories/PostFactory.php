@@ -15,6 +15,7 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->unique()->text($maxNbChars = 6),
+            'image_path' => 'temp_img.png',
             'discription' => $this->faker->text($maxNbChars = 100),
             'body' => $this->faker->text($maxNbChars = 300),
         ];

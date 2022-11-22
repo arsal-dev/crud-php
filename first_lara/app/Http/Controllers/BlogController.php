@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
 // php artisan
@@ -22,7 +23,7 @@ class BlogController extends Controller
         // $posts = DB::table('posts')
         //     ->get();
 
-        $posts = Post::all();
+        $posts = Post::latest()->get();
         return view('welcome', ['posts' => $posts]);
     }
 
@@ -33,7 +34,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return 'create form';
+        return view('create');
     }
 
     /**
@@ -44,7 +45,21 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|unique:posts',
+            'image' => 'required',
+            'discription' => 'required',
+            'body' => 'required'
+        ]);
+
+        Post::create([
+            'title' => $request->title,
+            'image_path' => $this->storeImg($request),
+            'discription' => $request->discription,
+            'body' => $request->body
+        ]);
+
+        return redirect('/')->with('message', 'Article Submitted Successfully');
     }
 
     /**
@@ -56,7 +71,7 @@ class BlogController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
-        return view('post', ['post' => $post]);
+        return view('show', ['post' => $post]);
     }
 
     /**
@@ -90,6 +105,14 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        
+        return redirect('/')->with('delete', 'Article Deleted Successfully');
+    }
+    private function storeImg($request){
+        $newFileName = uniqid() . '-' . $request->title . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $newFileName);
+
+        return $newFileName;
     }
 }
